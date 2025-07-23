@@ -47,7 +47,6 @@
 
 ## 📁 Project Structure
 
-```
 DiskUsageAnalyzer/
 │
 ├── DiskUsageAnalyzer.java           # Main UI and logic
@@ -59,7 +58,6 @@ DiskUsageAnalyzer/
 │   ├── XZUtils.java
 
 ├── icons/                       # Icon
-```
 
 ---
 
