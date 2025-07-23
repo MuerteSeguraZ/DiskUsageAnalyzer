@@ -1,0 +1,8 @@
+/bin/ 
+/build/ 
+*.class 
+*.log 
+*.jar 
+*.iml 
+.idea/ 
+.DS_Store 
