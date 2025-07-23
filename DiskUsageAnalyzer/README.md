@@ -99,6 +99,6 @@ MIT License – feel free to use, modify, and share.
 
 ## 🙌 Credits
 
-Developed by [Your Name Here]  
+Developed by MuerteSeguraZ  
 Compression features powered by custom utility classes: `TarUtils`, `BZip2Utils`, `XZUtils`, etc.
 ```
