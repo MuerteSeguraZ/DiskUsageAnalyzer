@@ -24,6 +24,7 @@ import java.util.zip.ZipOutputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.GZIPInputStream;
 import DiskUsageAnalyzer.utils.TarUtils;
+import DiskUsageAnalyzer.DiskChartPanel;
 import DiskUsageAnalyzer.utils.BZip2Utils;
 import DiskUsageAnalyzer.utils.XZUtils;
 
@@ -39,6 +40,7 @@ public class DiskUsageAnalyzer extends JFrame {
     private JLabel totalSizeLabel;
     private JTree folderTree;
     private DefaultTreeModel treeModel;
+    private DiskChartPanel treeMapPanel;
     private JProgressBar progressBar;
 
     private int totalFiles;
@@ -75,6 +77,12 @@ public class DiskUsageAnalyzer extends JFrame {
         totalSizeLabel = new JLabel("Total Size: 0 B");
 
         JScrollPane treeScroll = new JScrollPane(folderTree);
+        treeMapPanel = new DiskChartPanel();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Tree View", treeScroll);
+        tabbedPane.addTab("Chart", treeMapPanel);
+
         progressBar = new JProgressBar();
         progressBar.setVisible(false);
 
@@ -111,11 +119,22 @@ public class DiskUsageAnalyzer extends JFrame {
             }
         });
 
+        JButton treeMapButton = new JButton("Chart");
+        treeMapButton.addActionListener(e -> {
+            if (currentFolder != null) {
+                treeMapPanel.setData(currentFolder);
+                tabbedPane.setSelectedIndex(1);
+            } else {
+                JOptionPane.showMessageDialog(this, "Select a folder first!");
+            }
+        });
+
         JPanel topPanel = new JPanel(new FlowLayout());
         topPanel.add(selectFolderButton);
         topPanel.add(refreshButton);
         topPanel.add(exportButton);
-        topPanel.add(seeAllButton); // Add the "See All" button
+        topPanel.add(seeAllButton);
+        topPanel.add(treeMapButton);
         topPanel.add(folderPathLabel);
 
         JPanel summaryPanel = new JPanel(new FlowLayout());
@@ -124,7 +143,7 @@ public class DiskUsageAnalyzer extends JFrame {
         summaryPanel.add(totalSizeLabel);
 
         add(topPanel, BorderLayout.NORTH);
-        add(treeScroll, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.CENTER);
         add(progressBar, BorderLayout.SOUTH);
         add(summaryPanel, BorderLayout.PAGE_END);
     }
@@ -167,6 +186,7 @@ public class DiskUsageAnalyzer extends JFrame {
             protected void done() {
                 updateSummary();
                 progressBar.setVisible(false);
+                treeMapPanel.setData(currentFolder);
             }
         };
         worker.execute();

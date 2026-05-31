@@ -71,8 +71,8 @@ DiskUsageAnalyzer/
 
 ### CLI:
 ```bash
-javac DiskUsageAnalyzer/*.java utils/*.java
-java DiskUsageAnalyzer.DiskUsageAnalyzer
+mvn compile
+mvn exec:java "-Dexec.mainClass=DiskUsageAnalyzer.DiskUsageAnalyzer"
 ```
 
 #### Or use an IDE:
@@ -82,8 +82,9 @@ java DiskUsageAnalyzer.DiskUsageAnalyzer
 ---
 
 ## 🧠 TODO / Planned Features
-- [ ] TreeMap-style visual disk usage view
-- [ ] Export disk analysis to PDF/CSV
+- [x] TreeMap-style visual disk usage view
+- [x] Export disk analysis to CSV/JSON/HTML
+- [ ] Export to PDF
 - [ ] Dark mode support
 - [ ] Drag & drop file/folder operations
 
