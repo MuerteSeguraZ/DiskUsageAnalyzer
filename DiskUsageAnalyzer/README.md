@@ -84,7 +84,7 @@ mvn exec:java "-Dexec.mainClass=DiskUsageAnalyzer.DiskUsageAnalyzer"
 ## 🧠 TODO / Planned Features
 - [x] TreeMap-style visual disk usage view
 - [x] Export disk analysis to CSV/JSON/HTML
-- [ ] Export to PDF
+- [x] Export to PDF
 - [ ] Dark mode support
 - [ ] Drag & drop file/folder operations
 

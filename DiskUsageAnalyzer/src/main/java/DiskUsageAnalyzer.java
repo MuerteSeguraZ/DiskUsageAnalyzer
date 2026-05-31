@@ -27,6 +27,13 @@ import DiskUsageAnalyzer.utils.TarUtils;
 import DiskUsageAnalyzer.DiskChartPanel;
 import DiskUsageAnalyzer.utils.BZip2Utils;
 import DiskUsageAnalyzer.utils.XZUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 @SuppressWarnings("unused")
 public class DiskUsageAnalyzer extends JFrame {
@@ -763,6 +770,7 @@ newMenu.add(newLogFile);
         JButton csvButton = new JButton("Export as CSV");
         JButton jsonButton = new JButton("Export as JSON");
         JButton htmlButton = new JButton("Export as HTML");
+        JButton pdfButton = new JButton("Export as PDF");
 
         csvButton.addActionListener(e -> {
             exportAsCSV();
@@ -779,9 +787,15 @@ newMenu.add(newLogFile);
             dialog.dispose();
         });
 
+        pdfButton.addActionListener(e -> {
+            exportAsPDF();
+            dialog.dispose();
+        });
+
         dialog.add(csvButton);
         dialog.add(jsonButton);
         dialog.add(htmlButton);
+        dialog.add(pdfButton);
         dialog.setVisible(true);
     }
 
@@ -889,6 +903,128 @@ newMenu.add(newLogFile);
             } else {
                 pw.println(indent + "&nbsp;&nbsp;" + file.getName() + " - " + file.length() + " bytes<br>");
             }
+        }
+    }
+
+    private void exportAsPDF() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setSelectedFile(new File("DiskUsageReport.pdf"));
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try (PDDocument doc = new PDDocument()) {
+                PDFWriter writer = new PDFWriter(doc);
+
+                writer.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 18);
+                writer.writeLine("Disk Usage Report");
+                writer.skip(10);
+
+                writer.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 11);
+                writer.writeLine("Folder: " + currentFolder.getAbsolutePath());
+                writer.writeLine("Total Files: " + totalFiles + "   Total Folders: " + totalFolders + "   Total Size: " + readableSize(totalSize));
+                writer.skip(20);
+
+                writer.drawLine();
+                writer.skip(10);
+
+                writer.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 12);
+                writer.writeLine("Contents");
+                writer.skip(5);
+
+                writeFolderToPDF(writer, currentFolder, 0);
+
+                writer.close();
+                doc.save(chooser.getSelectedFile());
+                JOptionPane.showMessageDialog(this, "PDF report saved successfully.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error saving PDF: " + ex.getMessage());
+            }
+        }
+    }
+    
+    private void writeFolderToPDF(PDFWriter writer, File folder, int depth) throws IOException {
+        File[] files = folder.listFiles();
+        if (files == null) return;
+
+        for (File file : files) {
+            String prefix = file.isDirectory() ? "-> " : "   ";
+            String sizeStr = " (" + readableSize(file.isDirectory() ? folderSize(file) : file.length()) + ")";
+            String name = "  ".repeat(depth) + prefix + file.getName() + sizeStr;
+
+            writer.setFont(
+                file.isDirectory()
+                    ? new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD)
+                    : new PDType1Font(Standard14Fonts.FontName.HELVETICA),
+                10
+            );
+            writer.writeLine(name);
+
+            if (file.isDirectory()) {
+                writeFolderToPDF(writer, file, depth + 1);
+            }
+        }
+    }
+
+    private class PDFWriter {
+        private final PDDocument doc;
+        private PDPageContentStream cs;
+        private final float margin = 50;
+        private final float pageWidth;
+        private float y;
+        private PDFont currentFont;
+        private float currentSize;
+
+        PDFWriter(PDDocument doc) throws IOException {
+            this.doc = doc;
+            PDPage page = new PDPage(PDRectangle.A4);
+            doc.addPage(page);
+            this.pageWidth = page.getMediaBox().getWidth() - margin * 2;
+            this.cs = new PDPageContentStream(doc, page);
+            this.y = 780;
+        }
+
+        void setFont(PDFont font, float size) throws IOException {
+            this.currentFont = font;
+            this.currentSize = size;
+        }
+
+        void writeLine(String text) throws IOException {
+            if (y < 60) newPage();
+
+            // Truncate if too long
+            int maxChars = (int)(pageWidth / (currentSize * 0.5));
+            if (text.length() > maxChars) text = text.substring(0, maxChars - 1) + "...";
+
+            cs.beginText();
+            cs.setFont(currentFont, currentSize);
+            cs.newLineAtOffset(margin, y);
+            cs.showText(text);
+            cs.endText();
+            y -= (currentSize + 5);
+        }
+
+        void skip(float amount) {
+            y -= amount;
+        }
+
+        void drawLine() throws IOException {
+            if (y < 60) newPage();
+            cs.setLineWidth(0.5f);
+            cs.moveTo(margin, y);
+            cs.lineTo(margin + pageWidth, y);
+            cs.stroke();
+            y -= 5;
+        }
+
+        void newPage() throws IOException {
+            cs.close();
+            PDPage page = new PDPage(PDRectangle.A4);
+            doc.addPage(page);
+            cs = new PDPageContentStream(doc, page);
+            y = 780;
+            if (currentFont != null) cs.setFont(currentFont, currentSize);
+        }
+
+        void close() throws IOException {
+            cs.close();
         }
     }
 

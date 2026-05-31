@@ -5,6 +5,7 @@ DiskUsageAnalyzer\DiskUsageAnalyzer$TreePopupMenu.class
 DiskUsageAnalyzer\utils\TarUtils.class
 DiskUsageAnalyzer\DiskChartPanel$2.class
 DiskUsageAnalyzer\DiskUsageAnalyzer$2.class
+DiskUsageAnalyzer\DiskUsageAnalyzer$PDFWriter.class
 DiskUsageAnalyzer\utils\XZUtils.class
 DiskUsageAnalyzer\DiskChartPanel$1.class
 DiskUsageAnalyzer\DiskUsageAnalyzer.class
