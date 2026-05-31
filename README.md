@@ -1,4 +1,3 @@
-```markdown
 # DiskUsageAnalyzer
 
 **DiskUsageAnalyzer** is a Java Swing application that allows users to analyze disk usage, explore folders, manage files, and perform advanced operations such as compression, duplicate detection, and cleanup. It provides both a tree view and powerful tools to inspect and operate on your file system efficiently.
@@ -100,4 +99,3 @@ MIT License – feel free to use, modify, and share.
 
 Developed by MuerteSeguraZ  
 Compression features powered by custom utility classes: `TarUtils`, `BZip2Utils`, `XZUtils`, etc.
-```
