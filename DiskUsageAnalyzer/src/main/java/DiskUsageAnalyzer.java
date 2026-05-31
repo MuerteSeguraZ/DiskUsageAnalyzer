@@ -62,8 +62,10 @@ public class DiskUsageAnalyzer extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        ImageIcon icon = new ImageIcon("C:/Users/Eudald/Desktop/java/DiskUsageAnalyzer/icon/icon_diskusage.png");
-        setIconImage(icon.getImage());
+        java.net.URL iconUrl = getClass().getResource("/icon_diskusage.png");
+        if (iconUrl != null) {
+            setIconImage(new ImageIcon(iconUrl).getImage());
+        }
 
 
         selectFolderButton = new JButton("Choose Folder");
