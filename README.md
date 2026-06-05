@@ -1,18 +1,17 @@
 # DiskUsageAnalyzer
 
-**DiskUsageAnalyzer** is a Java Swing application that allows users to analyze disk usage, explore folders, manage files, and perform advanced operations such as compression, duplicate detection, and cleanup. It provides both a tree view and powerful tools to inspect and operate on your file system efficiently.
+**DiskUsageAnalyzer** is a Java Swing application that allows people to analyze disk usage, explore folders, manage files, and do advanced stuff like compression, duplicate detection, and cleanup. It gives both a tree view and powerful tools to inspect and operate on your file system efficiently.
 
 ---
 
-## 🔧 Features
+## Features
 
-### 📂 Folder Navigation
+### Folder Navigation
 - Select and scan any folder using a file chooser dialog.
-- Display folder structure in a `JTree` view.
 - View total size, number of files, and folders.
 - Refresh button to re-scan current folder.
 
-### 🧰 Tools & Utilities
+### Tools & Utilities
 
 #### Compression Tools
 - ZIP:
@@ -32,41 +31,21 @@
   - Detect missing files, size differences, and extras.
   - View results in a dialog or comparison panel.
 
-### 🆕 New File/Folder
+### New File/Folder
 - Right-click context menu for:
   - Creating new folders
   - Renaming
   - Deleting files/folders
 
-### 📊 Visual Feedback
+### Visual Feedback
 - `JProgressBar` shows scanning or long-running task progress.
 - Status labels display current folder and statistics.
 
 ---
 
-## 📁 Project Structure
+## Getting Started
 
-DiskUsageAnalyzer/
-│
-├── DiskUsageAnalyzer.java           # Main UI and logic
-├── pom.xml
-├── utils/
-│   ├── ZipUtils.java
-│   ├── TarUtils.java
-│   ├── BZip2Utils.java
-│   ├── XZUtils.java
-
-├── icons/                       # Icon
-
----
-
-## 🚀 Getting Started
-
-### ✅ Requirements
-- Java 8 or higher
-- Swing (bundled with Java SE)
-
-### 🔨 Build & Run
+### Build & Run
 
 ### CLI:
 ```bash
@@ -74,13 +53,9 @@ mvn compile
 mvn exec:java "-Dexec.mainClass=DiskUsageAnalyzer.DiskUsageAnalyzer"
 ```
 
-#### Or use an IDE:
-- Open the folder as a project.
-- Compile and run `DiskUsageAnalyzer.java`.
-
 ---
 
-## 🧠 TODO / Planned Features
+## TODO
 - [x] TreeMap-style visual disk usage view
 - [x] Export disk analysis to CSV/JSON/HTML
 - [x] Export to PDF
@@ -89,13 +64,14 @@ mvn exec:java "-Dexec.mainClass=DiskUsageAnalyzer.DiskUsageAnalyzer"
 
 ---
 
-## 📜 License
+## License
 
-MIT License – feel free to use, modify, and share.
+MIT
 
 ---
 
-## 🙌 Credits
+## Credits
 
 Developed by MuerteSeguraZ  
+PDFBox by Apache Software Foundation
 Compression features powered by custom utility classes: `TarUtils`, `BZip2Utils`, `XZUtils`, etc.
