@@ -74,4 +74,3 @@ MIT
 
 Developed by MuerteSeguraZ  
 PDFBox by Apache Software Foundation
-Compression features powered by custom utility classes: `TarUtils`, `BZip2Utils`, `XZUtils`, etc.
